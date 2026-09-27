@@ -1,10 +1,11 @@
+```groovy
 pipeline {
     agent any
 
     tools {
         jdk 'Java-21'
         maven 'Maven-3.9.9'
-     }
+    }
 
     stages {
 
@@ -26,11 +27,11 @@ pipeline {
         stage('Save WAR') {
             steps {
                 sh '''
-                    mkdir -p /home/ec2-user/warfiles
                     cp sample-app/target/*.war /home/ec2-user/warfiles/
                 '''
             }
         }
     }
 }
+
 
