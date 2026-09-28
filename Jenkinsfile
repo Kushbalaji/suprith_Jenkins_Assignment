@@ -24,11 +24,19 @@ pipeline {
             }
         }
 
-        stage('Save WAR') {
+        stage('Upload to JFrog') {
             steps {
-                sh '''
-                    cp sample-app/target/*.war /home/ec2-user/warfiles/
-                '''
+                withCredentials([usernamePassword(credentialsId: 'jfrog-creds',
+                                                 usernameVariable: 'JFROG_USER',
+                                                 passwordVariable: 'JFROG_PASS')]) {
+                    sh '''
+                        echo "Uploading WAR to JFrog..."
+                        WAR_FILE=$(ls sample-app/target/*.war)
+                        curl -u $JFROG_USER:$JFROG_PASS -T $WAR_FILE \
+                        "https://triald13vww.jfrog.io/artifactory/api/generic/javarepo/${JOB_NAME}-${BUILD_NUMBER}-sample.war"
+
+                    '''
+                }
             }
         }
     }
