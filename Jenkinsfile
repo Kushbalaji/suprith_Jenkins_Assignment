@@ -2,14 +2,14 @@
 pipeline {
     agent any
 
-    parameters {
-        string(
-            name: 'TOMCAT_SERVER_IP',
-            defaultValue: '',
-            description: 'Enter the Tomcat server IP address'
-        )
-    }
-
+    parameters { choice
+                ( name: 'TOMCAT_SERVER',
+                 choices: [ 
+                     'Tomcat-Production (3.110.148.200)', 
+                     'Tomcat-Test (3.110.150.25)'
+                 ],
+                 description: 'Select Tomcat server' )
+               }
     tools {
         jdk 'Java-21'
         maven 'Maven-3.9.9'
@@ -64,7 +64,8 @@ pipeline {
 
                         WAR_FILE=$(ls sample-app/target/*.war)
 
-                        SERVER_IP="${TOMCAT_SERVER_IP}"
+                        SERVER_IP=$(echo "$TOMCAT_SERVER" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')
+
                         SERVER_USER="ec2-user"
                         TOMCAT_DIR="/opt/tomcat/webapps"
 
