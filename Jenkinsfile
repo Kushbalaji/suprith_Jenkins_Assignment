@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         } 
-         stage('Deploy to Tomcat') {
+         stage('Deploy to Tomcat new') {
             steps {
                 sshagent (credentials: ['tomcat-ssh-key']) {
                     sh '''
