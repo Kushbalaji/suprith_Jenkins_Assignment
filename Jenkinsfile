@@ -2,12 +2,13 @@
 pipeline {
     agent any
 
-    parameters { choice
-                ( name: 'TOMCAT_SERVER',
-                 choices: [ 
-                     'Tomcat QA (13.207.198.17)', 
-                     'Test3 tomcat (13.206.108.184)'
-                 ],
+    parameters { 
+        choice(
+            name: 'TOMCAT_SERVER',
+            choices: [ 
+                'Tomcat QA (13.207.198.17)', 
+                'Test3 tomcat (13.206.108.184)'
+            ],
                  description: 'Select Tomcat server' )
                }
     tools {
